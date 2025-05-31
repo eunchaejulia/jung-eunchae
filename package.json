@@ -1,9 +1,8 @@
 {
-  "name": "noala-chatbot",
+  "name": "noala-gpt-vercel",
   "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
+  "main": "api/chat.js",
   "dependencies": {
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^2.6.9"
   }
 }

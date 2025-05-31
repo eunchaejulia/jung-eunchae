@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Noala GPT</title>
 </head>
 <body>
   <h1>Noala GPT</h1>
-  <input id="input" type="text" placeholder="메시지를 입력하세요" />
-  <button onclick="sendMessage()">보내기</button>
+  <input id="message" placeholder="메시지 입력" />
+  <button onclick="send()">보내기</button>
   <pre id="response"></pre>
   <script>
-    async function sendMessage() {
-      const input = document.getElementById("input").value;
+    async function send() {
+      const msg = document.getElementById("message").value;
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input })
+        body: JSON.stringify({ userMessage: msg }),
       });
       const data = await res.json();
-      document.getElementById("response").textContent = data.response || "응답 없음";
+      document.getElementById("response").textContent = data.assistant || data.error;
     }
   </script>
 </body>
