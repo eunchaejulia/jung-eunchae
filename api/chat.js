@@ -1,36 +1,30 @@
-import fetch from "node-fetch";
+import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Only POST method is allowed' });
   }
 
-  const { message, history } = req.body;
+  const userMessage = req.body.message;
+  const apiKey = process.env.OPENAI_API_KEY;
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          ...history.map(([user, assistant]) => [
-            { role: "user", content: user },
-            { role: "assistant", content: assistant },
-          ]).flat(),
-          { role: "user", content: message },
-        ],
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: userMessage }],
       }),
     });
 
     const data = await response.json();
-
-    return res.status(200).json({ result: data.choices[0].message.content });
+    const reply = data.choices?.[0]?.message?.content || '응답을 가져올 수 없어요.';
+    res.status(200).json({ reply });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Something went wrong." });
+    res.status(500).json({ error: error.message });
   }
 }

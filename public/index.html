@@ -1,30 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Noala Chatbot</title>
+  <title>Noala GPT</title>
 </head>
 <body>
-  <h1>노알라 챗봇</h1>
-  <input id="user-input" placeholder="메시지를 입력하세요" />
+  <h1>노알라 GPT 챗봇</h1>
+  <input type="text" id="userInput" placeholder="메시지를 입력하세요">
   <button onclick="sendMessage()">보내기</button>
-  <div id="chat-box"></div>
+  <p id="response"></p>
 
   <script>
     async function sendMessage() {
-      const input = document.getElementById("user-input");
-      const chatBox = document.getElementById("chat-box");
-
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input.value, history: [] }),
+      const message = document.getElementById('userInput').value;
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ message })
       });
       const data = await res.json();
-
-      const p = document.createElement("p");
-      p.textContent = "🦊: " + data.result;
-      chatBox.appendChild(p);
+      document.getElementById('response').textContent = data.reply || '응답 실패';
     }
   </script>
 </body>

@@ -1,7 +1,6 @@
 {
-  "name": "noala-chatbot",
+  "name": "noala-gpt-chatbot",
   "version": "1.0.0",
-  "main": "index.js",
   "type": "module",
   "dependencies": {
     "node-fetch": "^3.3.2"
