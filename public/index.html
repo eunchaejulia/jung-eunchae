@@ -1,25 +1,31 @@
-
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Noala GPT</title>
-  </head>
-  <body>
-    <h1>Noala GPT</h1>
-    <textarea id="userInput"></textarea>
-    <button onclick="sendMessage()">Send</button>
-    <p id="response"></p>
-    <script>
-      async function sendMessage() {
-        const input = document.getElementById('userInput').value;
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: input })
-        });
-        const data = await res.json();
-        document.getElementById('response').innerText = data.reply;
-      }
-    </script>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Noala Chatbot</title>
+</head>
+<body>
+  <h1>노알라 챗봇</h1>
+  <input id="user-input" placeholder="메시지를 입력하세요" />
+  <button onclick="sendMessage()">보내기</button>
+  <div id="chat-box"></div>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const chatBox = document.getElementById("chat-box");
+
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input.value, history: [] }),
+      });
+      const data = await res.json();
+
+      const p = document.createElement("p");
+      p.textContent = "🦊: " + data.result;
+      chatBox.appendChild(p);
+    }
+  </script>
+</body>
 </html>
