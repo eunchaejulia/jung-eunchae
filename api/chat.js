@@ -1,3 +1,5 @@
+import { fetch } from 'undici';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -15,14 +17,16 @@ export default async function handler(req, res) {
       body: JSON.stringify({ inputs: message })
     });
 
-    const data = await response.json();
-
-    if (!Array.isArray(data) || !data[0]?.generated_text) {
-      return res.status(500).json({ error: "Invalid response from HuggingFace" });
+    if (!response.ok) {
+      const errorText = await response.text();
+      return res.status(response.status).json({ error: errorText });
     }
 
-    res.status(200).json({ result: data[0].generated_text });
+    const data = await response.json();
+    const generatedText = data?.[0]?.generated_text || "응답이 없습니다.";
+    return res.status(200).json({ response: generatedText });
+
   } catch (err) {
-    res.status(500).json({ error: err.message || "Unknown error" });
+    return res.status(500).json({ error: "Server error: " + err.message });
   }
 }
