@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>노알라 GPT</title>
-</head>
-<body>
-  <h1>노알라 GPT 챗봇</h1>
-  <input id="prompt" placeholder="메시지를 입력하세요" />
-  <button onclick="send()">보내기</button>
-  <pre id="reply"></pre>
-  <script>
-    async function send() {
-      const prompt = document.getElementById("prompt").value;
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
-      });
-      const data = await res.json();
-      document.getElementById("reply").innerText = data.reply || "응답 실패";
-    }
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>노알라 GPT</title>
+  </head>
+  <body>
+    <h1>노알라 GPT 테스트</h1>
+    <input id="userInput" placeholder="메시지를 입력하세요" />
+    <button onclick="sendMessage()">보내기</button>
+    <p id="responseArea"></p>
+    <script>
+      async function sendMessage() {
+        const message = document.getElementById('userInput').value;
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message })
+        });
+        const data = await res.json();
+        document.getElementById('responseArea').innerText = data.reply || data.error;
+      }
+    </script>
+  </body>
 </html>
