@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
+const fetch = require("node-fetch");
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   try {
     const { prompt } = req.body;
 
@@ -21,4 +21,4 @@ export default async function handler(req, res) {
     console.error("❌ 서버 오류:", err);
     res.status(500).json({ error: "서버 오류 발생", detail: err.toString() });
   }
-}
+};
