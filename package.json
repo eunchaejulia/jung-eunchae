@@ -1,8 +1,0 @@
-{
-  "name": "jung-eunchae",
-  "version": "1.0.0",
-  "type": "module",
-  "dependencies": {
-    "undici": "^5.26.2"
-  }
-}
