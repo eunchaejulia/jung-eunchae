@@ -1,29 +1,24 @@
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   try {
     const { prompt } = req.body;
 
     const response = await fetch("https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta", {
+      method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+        "Authorization": `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
         "Content-Type": "application/json"
       },
-      method: "POST",
       body: JSON.stringify({ inputs: prompt })
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Inference API Error:", errorText);
-      return res.status(response.status).json({ error: "Inference API failed", detail: errorText });
-    }
-
     const data = await response.json();
-    const text = data.generated_text || data[0]?.generated_text || "응답 없음";
-    res.status(200).json({ text });
+    const reply = data?.generated_text || data[0]?.generated_text || "응답 없음";
+
+    res.status(200).json({ reply });
   } catch (err) {
-    console.error("Server Error:", err);
-    res.status(500).json({ error: "Server error", detail: err.toString() });
+    console.error("❌ 서버 오류:", err);
+    res.status(500).json({ error: "서버 오류 발생", detail: err.toString() });
   }
-};
+}
