@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>노알라 챗봇</title>
+  <title>노알라 GPT</title>
 </head>
 <body>
-  <h1>노알라 챗봇</h1>
-  <textarea id="message" placeholder="메시지를 입력하세요"></textarea>
+  <h1>노알라 GPT</h1>
+  <input type="text" id="user-input" placeholder="메시지를 입력하세요" />
   <button onclick="sendMessage()">전송</button>
-  <div id="response"></div>
+  <pre id="response"></pre>
 
   <script>
     async function sendMessage() {
-      const message = document.getElementById("message").value;
-      const res = await fetch("/api/chat", {
+      const message = document.getElementById("user-input").value;
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message })
       });
-      const data = await res.json();
-      document.getElementById("response").innerText = data.response || data.error;
+      const data = await response.json();
+      document.getElementById("response").textContent = data.response || data.error;
     }
   </script>
 </body>
