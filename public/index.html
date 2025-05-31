@@ -1,31 +1,24 @@
+
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>노알라 챗봇</title>
-    <style>
-      body { font-family: sans-serif; padding: 20px; }
-      #chatLog { white-space: pre-wrap; margin-top: 20px; }
-    </style>
+    <title>Noala GPT</title>
   </head>
   <body>
-    <h2>🦝 노알라 챗봇 (Hugging Face 기반)</h2>
-    <input id="userInput" placeholder="메시지를 입력하세요" />
-    <button onclick="send()">보내기</button>
-    <div id="chatLog"></div>
-
+    <h1>Noala GPT</h1>
+    <textarea id="userInput"></textarea>
+    <button onclick="sendMessage()">Send</button>
+    <p id="response"></p>
     <script>
-      async function send() {
-        const input = document.getElementById("userInput").value;
-        const res = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: input }),
+      async function sendMessage() {
+        const input = document.getElementById('userInput').value;
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: input })
         });
         const data = await res.json();
-        const chat = document.getElementById("chatLog");
-        chat.innerHTML += `👤 나: ${input}\n🦝 노알라: ${data.reply}\n\n`;
-        document.getElementById("userInput").value = "";
+        document.getElementById('response').innerText = data.reply;
       }
     </script>
   </body>
